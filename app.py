@@ -1,8 +1,10 @@
+import os
+import io
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 import torch
 from transformers import AutoImageProcessor, ResNetForImageClassification
-import io
+import uvicorn
 
 app = FastAPI()
 
@@ -60,3 +62,8 @@ async def classify_waste(file: UploadFile = File(...)):
         "category": category,
         "reward": reward
     }
+
+# Run the server
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)
